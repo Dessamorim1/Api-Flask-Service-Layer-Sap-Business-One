@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atualiza Oportunidade</title>
+    <script src="/static/js/app.js"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+
+</head>
+
+<body>
+
+    <div class="form-container">
+        <div id="glue">
+        <h4>Oportunidades e Concorrências</h4>
+        </div>
+        <!-- Procurar oportunidade-->
+        <div class="section">
+            <div class="form-row">
+                <div class="form-row">
+                    <label for="oportunidadelbl">Pesquisar Oportunidade:</label>
+                    <input type="text" name="seq_no" id="op" required>
+                </div>
+                <div class="form-group">
+                    <button type="button" id="btnsalvar" onclick="buscarOportunidade()">Procurar</button>
+                </div>
+            </div>
+
+
+            <p id="erro"></p>
+
+
+            
+                <div class="space">
+                    <h4> Dados da oportunidade</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="codcl">Cod. Cliente</label>
+                            <input type="text" id="cod" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="cliente">Nome Cliente</label>
+                            <input type="text" id="cliente" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nomOpor">Nome da Oportunidade</label>
+                            <input type="text" id="nomeopor" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date">Data Abertura</label>
+                            <input type="text" id="dataaber" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="prev">Prev.</label>
+                            <input type="text" id="fechamento" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="pot">Potencial (R$)</label>
+                            <input type="text" id="valor" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="vend">Vendedor</label>
+                            <input type="text" id="vendedor" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <input type="text" id="status" disabled>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="concorrente">
+                    <h4>Registro de Concorrentes</h4>
+                    <div class="concorrentes-grid">
+                        <div>#</div>
+
+                        <div id="conc">Concorrente</div>
+
+                        <div id="gr">Grau de Ameaça</div>
+
+                        <div>Marca/Fabricante</div>
+
+                        <div>Modelo</div>
+
+                        <div>Quantidade</div>
+
+                        <div>Valor Unitário</div>
+
+                        <div>Valor Total</div>
+
+                        <div>Observação</div>
+
+                        {% for i in range(20) %}
+                        <div><input type="number" disabled placeholder="#" readonly></div>
+                        <div>
+                            <select class="grid-select" disabled>
+                        </div>
+                        <option value=""></option>
+                        </select>
+                        </div>
+                    <div>
+                        <select class="grid-select" disabled>
+                    </div>
+                    <option value=""></option>
+                    <option value="Baixo">Baixo</option>
+                    <option value="Médio">Médio</option>
+                    <option value="Alto">Alto</option>
+                    </select>
+                </div>
+                <div><input type="text" disabled></div>
+                <div><input type="text" disabled></div>
+                <div><input type="number" disabled></div>
+                <div><input type="number" disabled></div>
+                <div><input type="number" disabled></div>
+                <div><input type="text" disabled></div>
+                {% endfor %}
+            
+        </div>
+       
+
+        <fieldset class="entrada-concorrentes">
+            <legend> Entrada de dados de concorrentes</legend>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="concorrente">Concorrente</label>
+                    <select id="concorrente" name="concorrente" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="grau">Ameaça</label>
+                    <select id="grau" name="grau" required>
+                        <option value="">Selecione</option>
+                        <option value="1">Baixo</option>
+                        <option value="2">Médio</option>
+                        <option value="3">Alto</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="marca">Marca/Fabricante</label>
+                    <input type="text" id="marca" name="marca">
+                </div>
+                <div class="form-group">
+                    <label for="modelo">Modelo</label>
+                    <input type="text" id="modelo" name="modelo">
+                </div>
+                <div class="form-group">
+                    <label for="quantidade">Qtde.</label>
+                    <input type="number" id="quantidade" name="quantidade" min="1">
+                </div>
+                <div class="form-group">
+                    <label for="valorUnit">V. Unitário</label>
+                    <input type="number" id="valorUnit" name="valorUnit" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="valorTot">V. Total </label>
+                    <input type="number" id="valorTot" name="valorTot" step="0.01">
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="obs">Observação</label>
+                    <input type="text" id="obs" name="obs">
+                </div>
+                <div class="form-group">
+                    <button type="button" id="btnadd" onclick="enviarConcorrente()">Adicionar</button>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+
+    <!-- Modal para adicionar novo concorrente -->
+    <div id="modalConcorrente" class="modal">
+        <div class="modal-content">
+            <span onclick="fecharModal()" class="close">&times;</span>
+
+            <h3>Definir Novo Competidor</h3>
+
+            <label for="nomeCompetidor">Nome do Competidor</label>
+            <input type="text" id="nomeCompetidor" required>
+
+
+            <button type="button" onclick="salvarNovoConcorrente()">Salvar</button>
+        </div>
+    </div>
+    <script>
+
+        window.onload = function () {
+            fetch('/api/competitors')
+                .then(res => res.json())
+                .then(lista => {
+                    concorrentesCadastrados = lista;
+
+                    // Preencher o select de entrada (form de adicionar concorrente)
+                    const select = document.getElementById("concorrente");
+                    select.innerHTML = '<option value="">Selecione</option>';
+                    lista.forEach(c => {
+                        const option = document.createElement("option");
+                        option.value = c.SequenceNo;
+                        option.text = c.Name;
+                        select.appendChild(option);
+                    });
+                    const optNovo = document.createElement("option");
+                    optNovo.value = "novo";
+                    optNovo.text = " Definir Novo";
+
+                    select.appendChild(optNovo);
+
+
+                    // Preencher os selects da grid
+
+                    // Adicionar listener para detectar seleção da opção “novo”
+                    select.addEventListener("change", function () {
+                        if (this.value === "novo") {
+                            this.value = "";  // Reseta a seleção
+                            abrirModal();     // Abre o modal
+                        } else {
+                            marcarModificado(); // Marca alteração
+                        }
+
+                    });
+                    document.querySelectorAll(".concorrente-select").forEach(select => {
+                        select.innerHTML = '<option value=""></option>';
+                        lista.forEach(c => {
+                            const option = document.createElement("option");
+                            option.value = c.SequenceNo;
+                            option.text = c.Name;
+                            select.appendChild(option);
+                        });
+
+                    });
+                });
+        };
+
+
+    </script>
+
+
+
+</body>
+
+
+
+</html>

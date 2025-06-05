@@ -1,0 +1,7 @@
+#Armazenamento de variáveis de ambiente sensíveis e configurações da conexão com o SAP Service Layer.
+
+SAP_BASE_URL= Variáveis de ambiente
+SAP_USERNAME= Variáveis de ambiente
+SAP_PASSWORD= Variáveis de ambiente
+SAP_COMPANY_DB= Variáveis de ambiente
+SSL_VERIFY= Variáveis de ambiente

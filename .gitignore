@@ -1,0 +1,31 @@
+# Arquivos e pastas do ambiente virtual
+venv/
+env/
+ENV/
+
+# Bytecode do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Configuração do sistema
+.Python
+
+# Arquivos de cache
+*.sqlite3
+*.log
+
+# Arquivos sensíveis
+.env
+
+# VSCode settings (se usar)
+.vscode/
+
+# PyCharm settings (se usar)
+.idea/
+
+# Arquivos gerados por sistema
+.DS_Store
+Thumbs.db
+
