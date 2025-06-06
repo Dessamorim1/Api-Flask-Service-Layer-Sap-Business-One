@@ -1,10 +1,17 @@
 body {
     font-family: Tahoma, sans-serif;
     margin: 0;
-    padding: 70px;
+    padding: 100px;
 
 
 }
+
+.linha-concorrente.destaque {
+    background-color: #fff9c4; /* amarelo claro */
+    border: 2px solid #fbc02d;
+    transition: background-color 0.5s ease;
+}
+
 
 .form-container {
     background: linear-gradient(to bottom, #9bbcd8 0%, #c9ddee 100%);
@@ -306,3 +313,5 @@ button:hover {
     color: #721c24;
     font-weight: bold;
 }
+
+

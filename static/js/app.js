@@ -7,8 +7,74 @@ let seqNoAtual = null;
 
 
 function enviarConcorrente() {
+    const btn = document.getElementById("btnadd");
+    btn.disabled = true;
+
     if (!seqAtual) {
-        alert("Você precisa buscar uma oportunidade primeiro.");
+        Swal.fire({
+            icon: 'info',
+            title: 'Nenhuma oportunidade selecionada',
+            text: 'Você precisa buscar uma oportunidade primeiro.',
+            confirmButtonText: 'Fechar',
+            customClass: {
+                popup: 'meu-alerta-popup',
+                title: 'meu-alerta-titulo',
+                confirmButton: 'meu-alerta-botao',
+            }
+        });
+        btn.disabled = false;
+        return;
+    }
+
+    const status = document.getElementById("status").value.trim().toLowerCase();
+    if (status === 'ganhou' || status === 'perdeu') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oportunidade Fechada',
+            text: 'Não podem ser adicionados novos concorrentes!',
+            confirmButtonText: 'Fechar',
+            customClass: {
+                popup: 'meu-alerta-popup',
+                title: 'meu-alerta-titulo',
+                confirmButton: 'meu-alerta-botao',
+            }
+        });
+        btn.disabled = false;
+        return;
+    }
+
+    const concorrenteVal = document.getElementById("concorrente").value.trim();
+    const threatLevelVal = document.getElementById("grau").value.trim();
+
+    if (!concorrenteVal) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campo concorrente obrigatório',
+            text: 'Por favor, selecione um concorrente.',
+            confirmButtonText: 'Fechar',
+            customClass: {
+                popup: 'meu-alerta-popup',
+                title: 'meu-alerta-titulo',
+                confirmButton: 'meu-alerta-botao',
+            }
+        });
+        btn.disabled = false;
+        return;
+    }
+
+    if (!threatLevelVal) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campo Ameaça obrigatório',
+            text: 'Por favor, selecione o grau de ameaça.',
+            confirmButtonText: 'Fechar',
+            customClass: {
+                popup: 'meu-alerta-popup',
+                title: 'meu-alerta-titulo',
+                confirmButton: 'meu-alerta-botao',
+            }
+        });
+        btn.disabled = false;
         return;
     }
 
@@ -30,11 +96,36 @@ function enviarConcorrente() {
     })
         .then(res => res.json())
         .then(data => {
-            alert(data.mensagem || "Concorrente adicionado!");
-            buscarOportunidade();
+            Swal.fire({
+                icon: 'success',
+                title: 'Concorrente adicionado',
+                text: data.mensagem || 'Concorrente foi adicionado com sucesso!',
+                confirmButtonText: 'OK',
+                customClass: {
+                    popup: 'meu-alerta-popup',
+                    title: 'meu-alerta-titulo',
+                    confirmButton: 'meu-alerta-botao',
+                }
+            }).then(() => {
+                limparCamposConcorrente();
+                buscarOportunidade();
+                btn.disabled = false;// Executa após o usuário clicar em OK
+            });
         })
         .catch(err => {
-            alert("Erro ao adicionar concorrente: " + err.message);
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro ao adicionar concorrente',
+                text: err.message,
+                confirmButtonText: 'Fechar',
+                customClass: {
+                    popup: 'meu-alerta-popup',
+                    title: 'meu-alerta-titulo',
+                    confirmButton: 'meu-alerta-botao',
+                }
+
+            });
+            btn.disabled = false;
         });
 }
 
@@ -45,7 +136,7 @@ function buscarOportunidade() {
     erro.textContent = "";
     seqAtual = seq_no;
     modificacoesPendentes = false;
-  
+
 
     fetch(`/api/oportunidade?seq_no=${encodeURIComponent(seq_no)}`)
         .then(res => {
@@ -72,7 +163,19 @@ function buscarOportunidade() {
 
         })
         .catch(err => {
-            erro.textContent = err.message;
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro ao buscar oportunidade',
+                text: err.message || 'Erro desconhecido ao buscar oportunidade!',
+                confirmButtonText: 'Fechar',
+                customClass: {
+                    popup: 'meu-alerta-popup',
+                    title: 'meu-alerta-titulo',
+                    confirmButton: 'meu-alerta-botao',
+                }
+            });
+
+            // Limpa os campos se houver erro
             document.querySelectorAll("input[disabled]").forEach(el => el.value = "");
             preencherConcorrentes([]);
         });
@@ -81,17 +184,17 @@ function buscarOportunidade() {
 function preencherConcorrentes(lista) {
     const linhas = document.querySelectorAll(".concorrentes-grid div input, .concorrentes-grid div select");
 
-      for (let i = 0; i < linhas.length; i += 9) {
-     const camposLinha = Array.from(linhas).slice(i, i + 9);
+    for (let i = 0; i < linhas.length; i += 9) {
+        const camposLinha = Array.from(linhas).slice(i, i + 9);
 
-    camposLinha[1].innerHTML = '<option value="">Selecione</option>';
-    camposLinha[2].innerHTML = '<option value="">Selecione</option><option value="Baixo">Baixo</option><option value="Médio">Médio</option><option value="Alto">Alto</option>';
-    for (let j = 3; j <= 8; j++) {
-        camposLinha[j].value = "";
+        camposLinha[1].innerHTML = '<option value="">Selecione</option>';
+        camposLinha[2].innerHTML = '<option value="">Selecione</option><option value="Baixo">Baixo</option><option value="Médio">Médio</option><option value="Alto">Alto</option>';
+        for (let j = 3; j <= 8; j++) {
+            camposLinha[j].value = "";
+        }
     }
-}
 
-   const total = lista.length;
+    const total = lista.length;
 
 
     for (let i = 0; i < total; i++) {
@@ -107,7 +210,7 @@ function preencherConcorrentes(lista) {
             opt.text = cOpt.Name;
             select.appendChild(opt);
         });
-       
+
 
         select.value = c.Competition || "";
         const grauSelect = campos[2];
@@ -116,7 +219,7 @@ function preencherConcorrentes(lista) {
             case 'tlMedium': grauSelect.value = "Médio"; break;
             case 'tlHigh': grauSelect.value = "Alto"; break;
             default: grauSelect.value = "";
-            
+
         }
 
         campos[3].value = c.U_Marca || '';
@@ -125,8 +228,8 @@ function preencherConcorrentes(lista) {
         campos[6].value = c.U_ValorUnit || '';
         campos[7].value = c.U_ValorTot || '';
         campos[8].value = c.Details || '';
-    } 
- 
+    }
+
 }
 
 function marcarModificado() {
@@ -163,9 +266,45 @@ function fecharModal() {
 
 function salvarNovoConcorrente() {
     const nome = document.getElementById("nomeCompetidor").value.trim();
-   
+    const nomeDigitado = nome.toLowerCase();
+
+    const selectConcorrente = document.getElementById("concorrente");
+    let nomeExiste = false;
+
+    for (let option of selectConcorrente.options) {
+        if (option.text.trim().toLowerCase() === nomeDigitado) {
+            nomeExiste = true;
+            break;
+        }
+    }
+
+    if (nomeExiste) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Concorrente já cadastrado',
+            text: 'Este nome de concorrente já existe, tente um novo.',
+            confirmButtonText: 'Fechar',
+            customClass: {
+                popup: 'meu-alerta-popup',
+                title: 'meu-alerta-titulo',
+                confirmButton: 'meu-alerta-botao',
+            }
+        });
+        return;
+
+    }
     if (!nome) {
-        alert("Informe o nome do concorrente");
+        Swal.fire({
+            icon: 'error',
+            title: 'Nome do Concorrente não informado',
+            text: 'Você precisa informar um nome válido.',
+            confirmButtonText: 'Fechar',
+            customClass: {
+                popup: 'meu-alerta-popup',
+                title: 'meu-alerta-titulo',
+                confirmButton: 'meu-alerta-botao',
+            }
+        });
         return;
     }
 
@@ -179,9 +318,19 @@ function salvarNovoConcorrente() {
             return res.json();
         })
         .then(() => {
-            alert("Concorrente adicionado com sucesso!");
+            Swal.fire({
+                icon: 'Drag me',
+                title: 'Concorrente adicionado com Sucesso',
+                text: 'Você já pode usar o novo concorrente cadastrado.',
+                confirmButtonText: 'Fechar',
+                customClass: {
+                    popup: 'meu-alerta-popup',
+                    title: 'meu-alerta-titulo',
+                    confirmButton: 'meu-alerta-botao',
+                }
+            });
             document.getElementById("nomeCompetidor").value = "";
-            
+
 
             fecharModal();
 
@@ -205,6 +354,8 @@ function salvarNovoConcorrente() {
                 select.appendChild(optNovo);
             });
 
+
+
             const select = document.getElementById("concorrente");
             if (select) {
                 select.innerHTML = '<option value="">Selecione</option>';
@@ -222,7 +373,7 @@ function salvarNovoConcorrente() {
         });
 }
 
- 
+
 function atualizarCorStatus() {
     const input = document.getElementById('status');
     const valor = input.value.trim().toLowerCase();
@@ -236,6 +387,16 @@ function atualizarCorStatus() {
     }
 }
 
+function limparCamposConcorrente() {
+    document.getElementById("concorrente").value = "";
+    document.getElementById("grau").value = "";
+    document.getElementById("marca").value = "";
+    document.getElementById("modelo").value = "";
+    document.getElementById("quantidade").value = "";
+    document.getElementById("valorUnit").value = "";
+    document.getElementById("valorTot").value = "";
+    document.getElementById("obs").value = "";
+}
 
 
 
