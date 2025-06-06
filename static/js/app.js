@@ -5,6 +5,41 @@ let modificacoesPendentes = false;
 let seqAtual = "";
 let seqNoAtual = null;
 
+window.onload = function () {
+    fetch('/api/competitors')
+        .then(res => res.json())
+        .then(lista => {
+            concorrentesCadastrados = lista;
+
+            // Preencher o select de entrada (form de adicionar concorrente)
+            const select = document.getElementById("concorrente");
+            select.innerHTML = '<option value="">Selecione</option>';
+            lista.forEach(c => {
+                const option = document.createElement("option");
+                option.value = c.SequenceNo;
+                option.text = c.Name;
+                select.appendChild(option);
+            });
+            const optNovo = document.createElement("option");
+            optNovo.value = "novo";
+            optNovo.text = " Definir Novo";
+
+            select.appendChild(optNovo);
+
+
+            // Adicionar listener para detectar seleção da opção “novo”
+            select.addEventListener("change", function () {
+                if (this.value === "novo") {
+                    this.value = "";  // Reseta a seleção
+                    abrirModal();     // Abre o modal     
+                }
+
+            });
+
+
+
+        });
+};
 
 function enviarConcorrente() {
     const btn = document.getElementById("btnadd");
@@ -107,6 +142,7 @@ function enviarConcorrente() {
                     confirmButton: 'meu-alerta-botao',
                 }
             }).then(() => {
+                modificacoesPendentes = true;   
                 limparCamposConcorrente();
                 buscarOportunidade();
                 btn.disabled = false;// Executa após o usuário clicar em OK
@@ -232,18 +268,6 @@ function preencherConcorrentes(lista) {
 
 }
 
-function marcarModificado() {
-    if (!modificacoesPendentes) {
-        modificacoesPendentes = true;
-        document.getElementById("btnSalvar").style.display = "inline-block";
-    }
-    const campo = event.target;
-    campo.classList.add("modificado");
-}
-
-
-
-
 // Função para atualizar as informações da oportunidade
 function atualizarOportunidade(data) {
     document.getElementById('cardcode').textContent = data.CardCode || "N/A";
@@ -319,7 +343,7 @@ function salvarNovoConcorrente() {
         })
         .then(() => {
             Swal.fire({
-                icon: 'Drag me',
+                icon: 'success',
                 title: 'Concorrente adicionado com Sucesso',
                 text: 'Você já pode usar o novo concorrente cadastrado.',
                 confirmButtonText: 'Fechar',
@@ -330,8 +354,6 @@ function salvarNovoConcorrente() {
                 }
             });
             document.getElementById("nomeCompetidor").value = "";
-
-
             fecharModal();
 
             return fetch('/api/competitors');
