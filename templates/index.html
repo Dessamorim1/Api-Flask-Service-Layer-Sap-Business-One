@@ -19,7 +19,7 @@
         <!-- Procurar oportunidade-->
         <div class="section">
             <div class="form-row">
-                <div class="form-row">
+                <div class="form-group">
                     <label for="oportunidadelbl">Pesquisar Oportunidade:</label>
                     <input type="text" name="seq_no" id="op" required />
                 </div>
@@ -79,9 +79,9 @@
                 <h4>Registro de Concorrentes</h4>
 
                 <div class="concorrentes-grid">
-                    <div>#</div>
-                    <div class="coluna-titulo" id="conc">Concorrente</div>
-                    <div class="coluna-titulo" id="gr">Grau de Ameaça</div>
+                    <div></div>
+                    <div id="conc">Concorrente</div>
+                    <div id="gr">Grau de Ameaça</div>
                     <div>Marca/Fabricante</div>
                     <div>Modelo</div>
                     <div>Quantidade</div>
@@ -90,7 +90,7 @@
                     <div>Observação</div>
 
                     {% for i in range(20) %}
-                    <div><input type="number" disabled placeholder="#" readonly /></div>
+                    <div><input type="number" disabled placeholder="" readonly /></div>
                     <div>
                         <select class="grid-select" disabled>
                             <option value=""></option>
@@ -171,7 +171,7 @@
                     <h3>Definir Novo Competidor</h3>
                     <label for="nomeCompetidor">Nome do Competidor</label>
                     <input type="text" id="nomeCompetidor" required />
-                    <button type="button" onclick="salvarNovoConcorrente()">Salvar</button>
+                    <button type="button" id="btnmodal" onclick="salvarNovoConcorrente()">Salvar</button>
                 </div>
             </div>
         </div> 

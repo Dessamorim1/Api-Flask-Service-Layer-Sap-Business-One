@@ -1,97 +1,65 @@
 body {
     font-family: Tahoma, sans-serif;
+    background-color: #f0f2f5;
     margin: 0;
     padding: 100px;
 
 
 }
 
-.linha-concorrente.destaque {
-    background-color: #fff9c4; /* amarelo claro */
-    border: 2px solid #fbc02d;
-    transition: background-color 0.5s ease;
-}
-
-
 .form-container {
-    background: linear-gradient(to bottom, #9bbcd8 0%, #c9ddee 100%);
-    border: 1px solid #808080;
-    border-radius: 4px;
+    background-color: #d9e0e5;
+    border: 1px solid #ccc;
+    border-radius: 8px;
     padding: 5px;
     width: 900px;
     margin: auto;
-    box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 
 }
-
-
 
 h2 {
     font-size: 18px;
-
+    color: #2c3e50;
 }
 
 .section {
-    border: 1px solid #808080;
+    border: 1px solid #d1d1d1;
     padding: 10px;
     margin-bottom: 15px;
-    background-color: #F5F5F5;
+    background-color: #fafafa;
+    border-radius: 6px;
 
 }
 
 h4 {
-    margin-bottom: 4px;
-
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: #2c3e50;
 }
-
-
 
 label {
-    display: flex;
+    display: block;
     font-size: 12px;
-    margin-bottom: 2px;
-
+    margin-bottom: 4px;
+    color: #34495e;
 }
-
-
-
-
-.concorrente h4 {
-
-    margin-bottom: 10px;
-    margin-left: 3px;
-
-}
-
 
 input[type="text"],
-input[type="number"] {
-    font-size: 12px;
-    padding: 4px 6px;
-    border: 1px solid #A0A0A0;
-    background-color: white;
-    width: 130px;
-    color: black;
-}
-
-
-
-
-.entrada-concorrentes {
-    font-size: 14px;
-    padding: 0px;
-    margin-top: 10px;
-
-
-}
-
-.concorrente {
-    margin-bottom: 10px;
-}
-
+input[type="number"],
 select {
-    padding: 2px 4px;
-    width: 130px;
+    font-size: 12px;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #2c3e50;
+    border-radius: 6px;
+    transition: border-color 0.3s;
+}
+
+input[disabled] {
+    cursor: not-allowed;
+    background-color: #f0f0f0;
 }
 
 .form-row {
@@ -99,9 +67,7 @@ select {
     gap: 8px;
     padding: 2px;
     align-items: center;
-
 }
-
 
 #quantidade {
     width: 50px;
@@ -151,53 +117,29 @@ select {
     width: 852px;
 }
 
-
-
-/* Estilo dos campos que estão desabilitados */
-input[disabled] {
-    cursor: not-allowed;
-}
-
-/* Ajuste para os formulários e botões */
-
-
-/* Layout da grid para concorrentes */
 .concorrentes-grid {
     display: grid;
     grid-template-columns: 1px 110px 110px 110px 90px 100px 100px 100px 120px;
     gap: 1px;
-    border: 1px solid #808080;
+    border: 1px solid #ccc;
     padding: 1px;
     width: 860px;
     margin: 0 auto;
     justify-content: center;
-
-
     max-height: 85px;
-    /* altura visível */
     overflow-y: auto;
-    /* rolagem vertical */
-
+    background-color: #fff;
+    border-radius: 6px;
 }
 
-h4 {
-    font-size: 13px;
+.concorrentes-grid div {
+    padding: 5px;
 }
-
-.space h4 {
-    margin-left: 3px;
-}
-
-.section h4 {
-    margin-top: 4px;
-    font-size: 13px;
-}
-
-
 
 .concorrentes-grid div input {
     width: 90%;
     border: none;
+    background-color: transparent;
 }
 
 
@@ -205,10 +147,22 @@ h4 {
     font-size: 12px;
 }
 
+.concorrentes-grid div:nth-child(9n+1) {
+    visibility: hidden;
+}
 
-.concorrente-select {
-    width: 100px;
+.concorrentes-grid>div {
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}
 
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    border-color: #007BFF;
+    /* Muda a cor da borda para um azul específico */
+    outline: none;
+    /* Remove o contorno padrão que o navegador coloca ao redor do elemento focado */
 }
 
 .grid-select {
@@ -216,25 +170,54 @@ h4 {
     color: black;
 }
 
-.concorrentes-grid div {
-    background-color: white;
-    padding: 5px;
-
+.concorrente-select {
+    width: 100px;
 }
 
+button {
+    padding: 4px 8px;
+    font-size: 13px;
+    border-radius: 4px;
+    border: none;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+}
 
 #btnadd {
     margin-top: 16px;
-    padding: 2px 5px;
+    padding: 4px 8px;
+    font-size: 13px;
+    border-radius: 4px;
+    border: none;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
 }
 
 #btnsalvar {
-    padding: 2px 5px;
+    padding: 4px 8px;
+    font-size: 13px;
+    border-radius: 4px;
+    border: none;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
 }
 
+.concorrentes-grid select[disabled] {
+    background-color: transparent;
+    border: none;
+    color: #000;
+    pointer-events: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+}
 
 button:hover {
-    background-color: #d6eaff;
+    opacity: 0.5;
 }
 
 ::-webkit-scrollbar {
@@ -251,6 +234,10 @@ button:hover {
 
 }
 
+::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
 ::-webkit-scrollbar-button:single-button:decrement {
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Cpolygon points='5,0 0,5 10,5' fill='%23666'/%3E%3C/svg%3E") no-repeat center;
 }
@@ -258,12 +245,6 @@ button:hover {
 ::-webkit-scrollbar-button:single-button:increment {
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Cpolygon points='0,0 10,0 5,5' fill='%23666'/%3E%3C/svg%3E") no-repeat center;
 }
-
-::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
-}
-
-/*Estilo do Modal */
 
 .modal {
     display: none;
@@ -295,7 +276,6 @@ button:hover {
     cursor: pointer;
 }
 
-
 /* Estilo para o campo de erro */
 #erro {
     font-size: 14px;
@@ -314,4 +294,20 @@ button:hover {
     font-weight: bold;
 }
 
+input[type="text"],
+input[type="number"] {
+    font-size: 12px;
+    padding: 4px 6px;
+    width: 130px;
+    color: black;
+}
 
+select {
+    padding: 4px 6px;
+    width: 120px;
+    color: #000;
+}
+
+.entrada-concorrentes {
+    margin-top: 5px;
+}
