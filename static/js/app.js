@@ -37,7 +37,6 @@ window.onload = function () {
             });
 
 
-
         });
 };
 
@@ -121,7 +120,8 @@ function enviarConcorrente() {
         U_Quantidade: Number(document.getElementById("quantidade").value),
         U_ValorUnit: Number(document.getElementById("valorUnit").value),
         U_ValorTot: Number(document.getElementById("valorTot").value),
-        Details: document.getElementById("obs").value.trim()
+        Details: document.getElementById("obs").value.trim(),
+        U_Posicao: Number(document.getElementById("pos").value)
     };
 
     fetch(`/api/concorrentes/${seqAtual}`, {
@@ -220,12 +220,12 @@ function buscarOportunidade() {
 function preencherConcorrentes(lista) {
     const linhas = document.querySelectorAll(".concorrentes-grid div input, .concorrentes-grid div select");
 
-    for (let i = 0; i < linhas.length; i += 9) {
-        const camposLinha = Array.from(linhas).slice(i, i + 9);
+    for (let i = 0; i < linhas.length; i += 10) {
+        const camposLinha = Array.from(linhas).slice(i, i + 10);
 
-        camposLinha[1].innerHTML = '<option value="">Selecione</option>';
-        camposLinha[2].innerHTML = '<option value="">Selecione</option><option value="Baixo">Baixo</option><option value="Médio">Médio</option><option value="Alto">Alto</option>';
-        for (let j = 3; j <= 8; j++) {
+        camposLinha[2].innerHTML = '<option value=""></option>';
+        camposLinha[3].innerHTML = '<option value=""></option><option value="Baixo">Baixo</option><option value="Médio">Médio</option><option value="Alto">Alto</option>';
+        for (let j = 4; j <= 9; j++) {
             camposLinha[j].value = "";
         }
     }
@@ -235,10 +235,11 @@ function preencherConcorrentes(lista) {
 
     for (let i = 0; i < total; i++) {
         const c = lista[i] || {};
-        const campos = Array.from(linhas).slice(i * 9, (i + 1) * 9);
-        if (campos.length < 9) break;
+        const campos = Array.from(linhas).slice(i * 10, (i + 1) * 10);
+        if (campos.length < 10) break;
         campos[0].value = i + 1;
-        const select = campos[1]; // o campo "concorrente" da linha
+        campos[1].value = c.U_Posicao || '';
+        const select = campos[2]; // o campo "concorrente" da linha
         select.innerHTML = '';
         concorrentesCadastrados.forEach(cOpt => {
             const opt = document.createElement("option");
@@ -249,7 +250,7 @@ function preencherConcorrentes(lista) {
 
 
         select.value = c.Competition || "";
-        const grauSelect = campos[2];
+        const grauSelect = campos[3];
         switch (c.ThreatLevel) {
             case 'tlLow': grauSelect.value = "Baixo"; break;
             case 'tlMedium': grauSelect.value = "Médio"; break;
@@ -258,12 +259,12 @@ function preencherConcorrentes(lista) {
 
         }
 
-        campos[3].value = c.U_Marca || '';
-        campos[4].value = c.U_Modelo || '';
-        campos[5].value = c.U_Quantidade || '';
-        campos[6].value = c.U_ValorUnit || '';
-        campos[7].value = c.U_ValorTot || '';
-        campos[8].value = c.Details || '';
+        campos[4].value = c.U_Marca || '';
+        campos[5].value = c.U_Modelo || '';
+        campos[6].value = c.U_Quantidade || '';
+        campos[7].value = c.U_ValorUnit || '';
+        campos[8].value = c.U_ValorTot || '';
+        campos[9].value = c.Details || '';
     }
 
 }
@@ -418,6 +419,7 @@ function limparCamposConcorrente() {
     document.getElementById("valorUnit").value = "";
     document.getElementById("valorTot").value = "";
     document.getElementById("obs").value = "";
+    document.getElementById("pos").value = "";
 }
 
 

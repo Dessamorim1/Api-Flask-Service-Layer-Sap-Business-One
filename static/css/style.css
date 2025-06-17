@@ -4,7 +4,6 @@ body {
     margin: 0;
     padding: 100px;
 
-
 }
 
 .form-container {
@@ -86,17 +85,19 @@ input[disabled] {
 }
 
 #status {
-    width: 153px;
+    width: 162px;
 }
-
-
 
 #valorTot {
     width: 75px;
 }
 
+#pos {
+    width: 40px;
+}
+
 #obs {
-    width: 670px;
+    width: 630px;
 }
 
 #vendedor {
@@ -104,7 +105,7 @@ input[disabled] {
 }
 
 #cliente {
-    width: 720px;
+    width: 729px;
 }
 
 
@@ -114,16 +115,16 @@ input[disabled] {
 
 
 #nomeopor {
-    width: 852px;
+    width: 860.5px;
 }
 
 .concorrentes-grid {
     display: grid;
-    grid-template-columns: 1px 110px 110px 110px 90px 100px 100px 100px 120px;
+    grid-template-columns: 0px 60px 110px 110px 110px 100px 80px 80px 80px 120px;
     gap: 1px;
     border: 1px solid #ccc;
     padding: 1px;
-    width: 860px;
+    width: 870px;
     margin: 0 auto;
     justify-content: center;
     max-height: 85px;
@@ -142,12 +143,11 @@ input[disabled] {
     background-color: transparent;
 }
 
-
-.concorrentes-grid div:nth-child(-n+9) {
+.concorrentes-grid div:nth-child(-n+10) {
     font-size: 12px;
 }
 
-.concorrentes-grid div:nth-child(9n+1) {
+.concorrentes-grid div:nth-child(10n+1) {
     visibility: hidden;
 }
 
@@ -267,7 +267,6 @@ button:hover {
     position: relative;
 }
 
-
 .close {
     position: absolute;
     top: 10px;
@@ -311,3 +310,4 @@ select {
 .entrada-concorrentes {
     margin-top: 5px;
 }
+

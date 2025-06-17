@@ -69,13 +69,21 @@ def criar_nome_concorrente():
         else:
                return jsonify({'erro': 'Erro ao criar concorrente'}), 500
         
-
 @app.route('/api/concorrentes/<int:seq_no>', methods=['POST'])
 def adicionar_concorrente(seq_no):
     dados = request.get_json()
     novo = dados.get("novoConcorrente")
     if not isinstance(novo, dict):
         return jsonify({'erro': 'Dados inválidos'}), 400
+    
+    AMEACA_ENUM = {
+        "Baixo": "tlLow",
+        "Médio": "tlMedium",
+        "Alto": "tlHigh"
+    }
+    threat_level_legivel = novo.get("ThreatLevel")
+    if threat_level_legivel in AMEACA_ENUM:
+        novo["ThreatLevel"] = AMEACA_ENUM[threat_level_legivel]
 
     with SAPServiceLayer() as sap:
         oportunidade = sap.buscar_oportunidade_por_seq(seq_no)
@@ -85,11 +93,13 @@ def adicionar_concorrente(seq_no):
         concorrentes = oportunidade.get("SalesOpportunitiesCompetition", [])
         novo["RowNo"] = len(concorrentes) + 1
         concorrentes.append(novo)
+
         sucesso = sap.atualizar_oportunidade(seq_no, concorrentes)
         if sucesso:
             return jsonify({'mensagem': 'Concorrente adicionado com sucesso'}), 200
         else:
             return jsonify({'erro': 'Erro ao atualizar concorrentes'}), 500
+
       
 
 @app.route('/api/competitors')
