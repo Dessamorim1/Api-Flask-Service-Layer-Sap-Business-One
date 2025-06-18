@@ -56,9 +56,20 @@ select {
     transition: border-color 0.3s;
 }
 
+
+
 input[disabled] {
     cursor: not-allowed;
     background-color: #f0f0f0;
+}
+
+#pos{
+    font-size: 12px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #2c3e50;
+    border-radius: 6px;
+    transition: border-color 0.3s;
 }
 
 .form-row {

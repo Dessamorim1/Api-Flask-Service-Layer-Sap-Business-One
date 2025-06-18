@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, jsonify
 from service_layer import SAPServiceLayer  
 import requests
 
-
 app = Flask(__name__)
 
 @app.route('/')
@@ -48,7 +47,6 @@ def buscar_oportunidade():
             "MaxLocalTotal": oportunidade.get("MaxLocalTotal", 0),
             "SalesOpportunitiesCompetition": oportunidade.get("SalesOpportunitiesCompetition", [])
         })
-    
 
 @app.route('/api/competitorsNome', methods=['POST'])
 def criar_nome_concorrente():
@@ -69,6 +67,17 @@ def criar_nome_concorrente():
         else:
                return jsonify({'erro': 'Erro ao criar concorrente'}), 500
         
+@app.route('/api/posicao/<int:seq_no>')
+def posicao_concorrente(seq_no):
+    with SAPServiceLayer() as sap:
+        oportunidade = sap.buscar_oportunidade_por_seq(seq_no)
+        if not oportunidade:
+            return jsonify({'erro': 'Oportunidade não encontrada'}), 404
+
+        concorrentes = oportunidade.get("SalesOpportunitiesCompetition", [])
+        proximo = len(concorrentes) + 1
+        return jsonify ({'posicao_concorrente': proximo})
+
 @app.route('/api/concorrentes/<int:seq_no>', methods=['POST'])
 def adicionar_concorrente(seq_no):
     dados = request.get_json()
@@ -91,16 +100,15 @@ def adicionar_concorrente(seq_no):
             return jsonify({'erro': 'Oportunidade não encontrada'}), 404
 
         concorrentes = oportunidade.get("SalesOpportunitiesCompetition", [])
-        novo["RowNo"] = len(concorrentes) + 1
+        proximo_numero = len(concorrentes) + 1
+        novo["RowNo"] = proximo_numero
         concorrentes.append(novo)
-
+    
         sucesso = sap.atualizar_oportunidade(seq_no, concorrentes)
         if sucesso:
             return jsonify({'mensagem': 'Concorrente adicionado com sucesso'}), 200
         else:
             return jsonify({'erro': 'Erro ao atualizar concorrentes'}), 500
-
-      
 
 @app.route('/api/competitors')
 def listar_competitors():
@@ -110,7 +118,6 @@ def listar_competitors():
             return jsonify(concorrentes)
         else:
             return jsonify({"erro": "Erro ao buscar concorrentes"}), 500
-   
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)

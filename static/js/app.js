@@ -120,8 +120,7 @@ function enviarConcorrente() {
         U_Quantidade: Number(document.getElementById("quantidade").value),
         U_ValorUnit: Number(document.getElementById("valorUnit").value),
         U_ValorTot: Number(document.getElementById("valorTot").value),
-        Details: document.getElementById("obs").value.trim(),
-        U_Posicao: Number(document.getElementById("pos").value)
+        Details: document.getElementById("obs").value.trim()
     };
 
     fetch(`/api/concorrentes/${seqAtual}`, {
@@ -142,7 +141,7 @@ function enviarConcorrente() {
                     confirmButton: 'meu-alerta-botao',
                 }
             }).then(() => {
-                modificacoesPendentes = true;   
+                modificacoesPendentes = true;
                 limparCamposConcorrente();
                 buscarOportunidade();
                 btn.disabled = false;// Executa após o usuário clicar em OK
@@ -193,7 +192,7 @@ function buscarOportunidade() {
 
             concorrentesAtuais = data.SalesOpportunitiesCompetition || [];
             preencherConcorrentes(concorrentesAtuais);
-
+            posicao();
             seqNoAtual = seq_no;
 
 
@@ -217,6 +216,7 @@ function buscarOportunidade() {
         });
 }
 
+
 function preencherConcorrentes(lista) {
     const linhas = document.querySelectorAll(".concorrentes-grid div input, .concorrentes-grid div select");
 
@@ -232,13 +232,12 @@ function preencherConcorrentes(lista) {
 
     const total = lista.length;
 
-
     for (let i = 0; i < total; i++) {
         const c = lista[i] || {};
         const campos = Array.from(linhas).slice(i * 10, (i + 1) * 10);
         if (campos.length < 10) break;
         campos[0].value = i + 1;
-        campos[1].value = c.U_Posicao || '';
+        campos[1].value = c.RowNo || '';
         const select = campos[2]; // o campo "concorrente" da linha
         select.innerHTML = '';
         concorrentesCadastrados.forEach(cOpt => {
@@ -423,5 +422,27 @@ function limparCamposConcorrente() {
 }
 
 
+function posicao() {
+    if (!seqAtual) {
+        console.warn("nenhuma oportunidade selecionada");
+        return;
+    }
+
+    fetch(`/api/posicao/${seqAtual}`)
+        .then(res => {
+            if (!res.ok) throw new Error("Erro ao buscar posição");
+            return res.json();
+        })
+        .then(data =>  {
+        const proximo = data.posicao_concorrente;
+        console.log("próximo : " , proximo )
+
+        document.getElementById("pos").value = proximo;
+    })
+    .catch(err =>{
+        console.error("erro ao buscar", err);
+    });
+
+}
 
 
